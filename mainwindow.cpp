@@ -27,76 +27,113 @@
 ** rights. These rights are described in The Qt Company LGPL Exception
 ** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
-** $QT_END_LICENSE$
+** $QT_END_LICENSE$                          
 **
 ****************************************************************************/
 
-#include "chip.h"
 #include "mainwindow.h"
 #include "view.h"
+#include "c01graphicsscene.h"
+#include "c02toolbutton.h"
 
 #include <QHBoxLayout>
 #include <QSplitter>
+#include <QtWidgets>
 
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
 {
-    populateScene();
 
     h1Splitter = new QSplitter;
     h2Splitter = new QSplitter;
+
+    QSplitter *vGlobalHorizontalSplitter = new QSplitter;
+    vGlobalHorizontalSplitter->setOrientation(Qt::Horizontal);
+    QWidget *vLeftBox=new QWidget;
+    QVBoxLayout *vLeftBoxLayout=new QVBoxLayout;
+    vLeftBox->setLayout(vLeftBoxLayout);
+
+
+    vGlobalHorizontalSplitter->addWidget(vLeftBox);
 
     QSplitter *vSplitter = new QSplitter;
     vSplitter->setOrientation(Qt::Vertical);
     vSplitter->addWidget(h1Splitter);
     vSplitter->addWidget(h2Splitter);
 
-    View *view = new View("Top left view");
-    view->view()->setScene(scene);
-    h1Splitter->addWidget(view);
-
-    view = new View("Top right view");
-    view->view()->setScene(scene);
-    h1Splitter->addWidget(view);
-
-    view = new View("Bottom left view");
-    view->view()->setScene(scene);
-    h2Splitter->addWidget(view);
-
-    view = new View("Bottom right view");
-    view->view()->setScene(scene);
-    h2Splitter->addWidget(view);
+    vGlobalHorizontalSplitter->addWidget(vSplitter);
 
     QHBoxLayout *layout = new QHBoxLayout;
-    layout->addWidget(vSplitter);
+    layout->addWidget(vGlobalHorizontalSplitter);
     setLayout(layout);
 
-    setWindowTitle(tr("Chip Example"));
+    setWindowTitle(tr("Polygone"));
+    /******************* tool buttons ******************************************/
+ /*   QGridLayout * gridLayout=new QGridLayout;
+    //QButtonGroup //pour gerer les boutons ensemble apreès, une classe ferait l'affaire'
+    int size = style()->pixelMetric(QStyle::PM_ToolBarIconSize);
+    QSize iconSize(size, size);
+
+    QToolButton *zoomOutIcon = new QToolButton;
+    zoomOutIcon->setIcon(QPixmap(":/zoomout.png"));
+    zoomOutIcon->setIconSize(iconSize);
+
+    gridLayout->addWidget(zoomOutIcon);
+
+    QToolButton *zoomOutIcon1 = new QToolButton;
+    zoomOutIcon1->setIcon(QPixmap(":/zoomin.png"));
+    zoomOutIcon1->setIconSize(iconSize);
+
+    gridLayout->addWidget(zoomOutIcon1);
+
+    QToolButton *zoomOutIcon2 = new QToolButton;
+    zoomOutIcon2->setIcon(QPixmap(":/fileprint.png"));
+    zoomOutIcon2->setIconSize(iconSize);
+
+    gridLayout->addWidget(zoomOutIcon2);
+
+    QWidget * ButtonWidget=new QWidget;
+    ButtonWidget->setLayout(gridLayout);
+    gridLayout->setHorizontalSpacing(0);gridLayout->setVerticalSpacing(0);
+    vLeftBoxLayout->addWidget(ButtonWidget);*/
+    /******************* nouveau  ******************************************/
+    QWidget * RemainingPlaceWidget=new QWidget;
+    C02ToolButton *toolButton=new C02ToolButton;
+    vLeftBoxLayout->addWidget(toolButton);
+    toolButton->setIconSize( 30);
+    toolButton->setNbIconHorizontal(4);
+    toolButton->addToolButton(QPixmap(":/fileprint.png"));
+    toolButton->addToolButton(QPixmap(":/qt4logo.png"));
+    toolButton->addToolButton(QPixmap(":/rotateleft.png"));
+    toolButton->addToolButton(QPixmap(":/zoomin.png"));
+    toolButton->addToolButton(QPixmap(":/zoomout.png"));
+    toolButton->addToolButton(QPixmap(":/fileprint.png"));
+    toolButton->addToolButton(QPixmap(":/qt4logo.png"));
+    toolButton->addToolButton(QPixmap(":/rotateleft.png"));
+    toolButton->addToolButton(QPixmap(":/zoomin.png"));
+    toolButton->addToolButton(QPixmap(":/zoomout.png"));
+    toolButton->addToolButton(QPixmap(":/fileprint.png"));
+    toolButton->addToolButton(QPixmap(":/qt4logo.png"));
+    toolButton->addToolButton(QPixmap(":/rotateleft.png"));
+    toolButton->addToolButton(QPixmap(":/zoomin.png"));
+   // toolButton->addToolButton(QPixmap(":/zoomout.png"));
+    toolButton->redraw();
+
+    vLeftBoxLayout->addWidget(RemainingPlaceWidget);
+ //   ButtonWidget->setFixedHeight(100);
+
+    /******************* creer les scenes ******************************************/
+    scene1 = new C01GraphicsScene;
+    scene1->populateScene();
+    scene2 = new C01GraphicsScene;
+    scene2->populateScene();
+
+    h1Splitter->addWidget(scene1->addView("Top left view"));
+    h1Splitter->addWidget(scene1->addView("Top right view"));
+    h2Splitter->addWidget(scene2->addView("Bottom left view"));
+    h2Splitter->addWidget(scene2->addView("Bottom right view"));
+    /******************* creer les outils ******************************************/
+
 }
 
-void MainWindow::populateScene()
-{
-    scene = new QGraphicsScene;
 
-    QImage image(":/qt4logo.png");
-
-    // Populate scene
-    int xx = 0;
-    int nitems = 0;
-    for (int i = -11000; i < 11000; i += 110) {
-        ++xx;
-        int yy = 0;
-        for (int j = -7000; j < 7000; j += 70) {
-            ++yy;
-            qreal x = (i + 11000) / 22000.0;
-            qreal y = (j + 7000) / 14000.0;
-
-            QColor color(image.pixel(int(image.width() * x), int(image.height() * y)));
-            QGraphicsItem *item = new Chip(color, xx, yy);
-            item->setPos(QPointF(i, j));
-            scene->addItem(item);
-
-            ++nitems;
-        }
-    }
-}

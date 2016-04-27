@@ -64,7 +64,7 @@ View::View(const QString &name, QWidget *parent)
 {
     setFrameStyle(Sunken | StyledPanel);
     graphicsView = new GraphicsView(this);
-    graphicsView->setRenderHint(QPainter::Antialiasing, false);
+    graphicsView->setRenderHint(QPainter::Antialiasing, true);
     graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
     graphicsView->setOptimizationFlags(QGraphicsView::DontSavePainterState);
     graphicsView->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);

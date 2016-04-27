@@ -40,6 +40,7 @@ QT_BEGIN_NAMESPACE
 class QGraphicsScene;
 class QSplitter;
 QT_END_NAMESPACE
+class C01GraphicsScene;
 
 class MainWindow : public QWidget
 {
@@ -49,9 +50,8 @@ public:
 
 private:
     void setupMatrix();
-    void populateScene();
-
-    QGraphicsScene *scene;
+    C01GraphicsScene *scene1;
+    C01GraphicsScene *scene2;
     QSplitter *h1Splitter;
     QSplitter *h2Splitter;
 };

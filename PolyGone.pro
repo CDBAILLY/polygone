@@ -19,11 +19,15 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     chip.cpp \
-    view.cpp
+    view.cpp \
+    c01graphicsscene.cpp \
+    c02toolbutton.cpp
 
 HEADERS  += mainwindow.h \
     chip.h \
-    view.h
+    view.h \
+    c01graphicsscene.h \
+    c02toolbutton.h
 
 FORMS    += mainwindow.ui
 

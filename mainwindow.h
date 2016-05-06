@@ -54,6 +54,7 @@ private:
     C01GraphicsScene *scene2;
     QSplitter *h1Splitter;
     QSplitter *h2Splitter;
+
 };
 
 #endif // MAINWINDOW_H

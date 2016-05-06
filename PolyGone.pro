@@ -21,13 +21,21 @@ SOURCES += main.cpp\
     chip.cpp \
     view.cpp \
     c01graphicsscene.cpp \
-    c02toolbutton.cpp
+    c02toolbutton.cpp \
+    c02qbuttongroup.cpp \
+    c02qtoolbutton.cpp \
+    c03statemachinebase.cpp \
+    c03statemachinepositioner.cpp
 
 HEADERS  += mainwindow.h \
     chip.h \
     view.h \
     c01graphicsscene.h \
-    c02toolbutton.h
+    c02toolbutton.h \
+    c02qbuttongroup.h \
+    c02qtoolbutton.h \
+    c03statemachinebase.h \
+    c03statemachinepositioner.h
 
 FORMS    += mainwindow.ui
 

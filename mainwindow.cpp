@@ -39,6 +39,7 @@
 #include <QHBoxLayout>
 #include <QSplitter>
 #include <QtWidgets>
+#include <QStyleFactory>
 
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
@@ -101,21 +102,12 @@ MainWindow::MainWindow(QWidget *parent)
     C02ToolButton *toolButton=new C02ToolButton;
     vLeftBoxLayout->addWidget(toolButton);
     toolButton->setIconSize( 30);
-    toolButton->setNbIconHorizontal(4);
-    toolButton->addToolButton(QPixmap(":/fileprint.png"));
-    toolButton->addToolButton(QPixmap(":/qt4logo.png"));
-    toolButton->addToolButton(QPixmap(":/rotateleft.png"));
-    toolButton->addToolButton(QPixmap(":/zoomin.png"));
-    toolButton->addToolButton(QPixmap(":/zoomout.png"));
-    toolButton->addToolButton(QPixmap(":/fileprint.png"));
-    toolButton->addToolButton(QPixmap(":/qt4logo.png"));
-    toolButton->addToolButton(QPixmap(":/rotateleft.png"));
-    toolButton->addToolButton(QPixmap(":/zoomin.png"));
-    toolButton->addToolButton(QPixmap(":/zoomout.png"));
-    toolButton->addToolButton(QPixmap(":/fileprint.png"));
-    toolButton->addToolButton(QPixmap(":/qt4logo.png"));
-    toolButton->addToolButton(QPixmap(":/rotateleft.png"));
-    toolButton->addToolButton(QPixmap(":/zoomin.png"));
+    toolButton->setNbIconHorizontal(2);
+    //toolButton->addToolButton(QPixmap(":/select-pass.png"),QPixmap(":/select-gris.png"),QPixmap(":/select-on.png"),QPixmap(":/select-no.png"),"select");
+    //toolButton->addToolButton(QPixmap(":/select-pass.png"),QPixmap(":/draw-polygon.png"),QPixmap(":/fileprint.png"),QPixmap(":/zoomout.png"),"truc");
+    (toolButton->addToolButton(QPixmap(":/select.png"),"select"))->setChecked(true);
+    toolButton->addToolButton(QPixmap(":/edit-polygon.png"),"edit polygon");
+    toolButton->addToolButton(QPixmap(":/draw-polygon.png"),"create polygon");
    // toolButton->addToolButton(QPixmap(":/zoomout.png"));
     toolButton->redraw();
 
@@ -125,8 +117,10 @@ MainWindow::MainWindow(QWidget *parent)
     /******************* creer les scenes ******************************************/
     scene1 = new C01GraphicsScene;
     scene1->populateScene();
+    scene1->registerToolButton(toolButton);
     scene2 = new C01GraphicsScene;
     scene2->populateScene();
+    scene2->registerToolButton(toolButton);
 
     h1Splitter->addWidget(scene1->addView("Top left view"));
     h1Splitter->addWidget(scene1->addView("Top right view"));

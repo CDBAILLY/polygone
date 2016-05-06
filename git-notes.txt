@@ -1,0 +1,4 @@
+
+
+git status -> permet de savoir ou on en est, fichiers ajoutes/modifies
+

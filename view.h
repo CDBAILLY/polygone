@@ -51,11 +51,13 @@ class GraphicsView : public QGraphicsView
 public:
     GraphicsView(View *v) : QGraphicsView(), view(v) { }
 
+signals:
+    void focusInEvent(void);
 protected:
 #ifndef QT_NO_WHEELEVENT
     void wheelEvent(QWheelEvent *) Q_DECL_OVERRIDE;
 #endif
-
+virtual void	focusInEvent(QFocusEvent *event);
 private:
     View *view;
 };
@@ -68,6 +70,7 @@ public:
 
     QGraphicsView *view() const;
 
+    GraphicsView * theGraphicsView(){return graphicsView ;}
 public slots:
     void zoomIn(int level = 1);
     void zoomOut(int level = 1);

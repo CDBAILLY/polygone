@@ -58,7 +58,10 @@ void GraphicsView::wheelEvent(QWheelEvent *e)
     }
 }
 #endif
-
+void	GraphicsView::focusInEvent(QFocusEvent *event)
+{
+    emit focusInEvent();
+}
 View::View(const QString &name, QWidget *parent)
     : QFrame(parent)
 {

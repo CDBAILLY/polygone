@@ -1,4 +1,4 @@
-#include "C03StateMachineBase.h"
+#include "c03statemachinebase.h"
 #include "c03statemachinepositioner.h"
 
 C03stateMachinePositioner::C03stateMachinePositioner()

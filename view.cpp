@@ -62,6 +62,10 @@ void	GraphicsView::focusInEvent(QFocusEvent *event)
 {
     emit focusInEvent();
 }
+void	GraphicsView::focusOutEvent(QFocusEvent *event)
+{
+    emit focusOutEvent();
+}
 View::View(const QString &name, QWidget *parent)
     : QFrame(parent)
 {

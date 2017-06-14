@@ -35,99 +35,193 @@
 #include "view.h"
 #include "c01graphicsscene.h"
 #include "c02toolbutton.h"
+#include "c04scenecontext.h"
 
+#include <QMenuBar>
 #include <QHBoxLayout>
 #include <QSplitter>
+#include <QTabWidget>
 #include <QtWidgets>
+#include <QFrame>
 #include <QStyleFactory>
 
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
 {
 
-    h1Splitter = new QSplitter;
-    h2Splitter = new QSplitter;
 
     QSplitter *vGlobalHorizontalSplitter = new QSplitter;
     vGlobalHorizontalSplitter->setOrientation(Qt::Horizontal);
     QWidget *vLeftBox=new QWidget;
     QVBoxLayout *vLeftBoxLayout=new QVBoxLayout;
+    vLeftBoxLayout->setMargin(0);
+    vLeftBoxLayout->setContentsMargins(0,0,0,0);
+
     vLeftBox->setLayout(vLeftBoxLayout);
 
 
     vGlobalHorizontalSplitter->addWidget(vLeftBox);
 
-    QSplitter *vSplitter = new QSplitter;
-    vSplitter->setOrientation(Qt::Vertical);
-    vSplitter->addWidget(h1Splitter);
-    vSplitter->addWidget(h2Splitter);
+    QTabWidget *tabWidget = new QTabWidget;
+    tabWidget->setTabsClosable(true);
+    connect(tabWidget, &QTabWidget::tabCloseRequested, this, &MainWindow::tabCloseRequested);
+    globalContext.setTabWidget(tabWidget);
 
-    vGlobalHorizontalSplitter->addWidget(vSplitter);
+    vGlobalHorizontalSplitter->addWidget(tabWidget);
+
+    QVBoxLayout *PrimaryLayout=new QVBoxLayout;
 
     QHBoxLayout *layout = new QHBoxLayout;
+    QWidget *layoutWidget=new QWidget;
+
     layout->addWidget(vGlobalHorizontalSplitter);
-    setLayout(layout);
+    //PrimaryLayout->setStretchFactor(layout,20);
 
+    //PrimaryLayout->addLayout(layout);
+    setLayout(PrimaryLayout);
+    layoutWidget->setLayout(layout);
+    /************  Menu Bar *******************************************/
+    QMenuBar * menuBar= new QMenuBar ;
+    //-----------
+    QMenu *fileMenu = menuBar->addMenu(tr("&File"));
+        //-----------
+        QAction *newAct = new QAction(tr("&New"), this);;
+        newAct->setShortcuts(QKeySequence::New);
+        newAct->setStatusTip(tr("Create a new Projet"));
+        connect(newAct, &QAction::triggered, this, &MainWindow::newProj);
+        fileMenu->addAction(newAct);
+        //-----------
+        newAct = new QAction(tr("&Open"), this);;
+        newAct->setShortcuts(QKeySequence::New);
+        newAct->setStatusTip(tr("Open a file"));
+        fileMenu->addAction(newAct);
+        //-----------
+        newAct = new QAction(tr("&Save"), this);;
+        newAct->setShortcuts(QKeySequence::New);
+        newAct->setStatusTip(tr("Save current project"));
+        fileMenu->addAction(newAct);
+        //-----------
+        newAct = new QAction(tr("&Save as"), this);;
+        newAct->setShortcuts(QKeySequence::New);
+        newAct->setStatusTip(tr("Save current project as"));
+        fileMenu->addAction(newAct);
+        //-----------
+        newAct = new QAction(tr("&Close"), this);;
+        newAct->setShortcuts(QKeySequence::New);
+        newAct->setStatusTip(tr("Close project"));
+        fileMenu->addAction(newAct);
+        connect(newAct, &QAction::triggered, this, &MainWindow::closeProj);
+    //-----------
+    fileMenu = menuBar->addMenu(tr("&Tools"));
+    //-----------
+    fileMenu = menuBar->addMenu(tr("&About"));
+        //-----------
+        newAct = new QAction(tr("&About"), this);;
+        newAct->setShortcuts(QKeySequence::New);
+        newAct->setStatusTip(tr("Nothing for now"));
+        fileMenu->addAction(newAct);
+        //-----------
+        newAct = new QAction(tr("&Preference"), this);;
+        newAct->setShortcuts(QKeySequence::New);
+        newAct->setStatusTip(tr("Settings"));
+        fileMenu->addAction(newAct);
+    /************  End Menu Bar *******************************************/
+    PrimaryLayout->addWidget(menuBar);
+    menuBar->setFixedHeight(25);
+    PrimaryLayout->addWidget(layoutWidget);
     setWindowTitle(tr("Polygone"));
-    /******************* tool buttons ******************************************/
- /*   QGridLayout * gridLayout=new QGridLayout;
-    //QButtonGroup //pour gerer les boutons ensemble apreès, une classe ferait l'affaire'
-    int size = style()->pixelMetric(QStyle::PM_ToolBarIconSize);
-    QSize iconSize(size, size);
-
-    QToolButton *zoomOutIcon = new QToolButton;
-    zoomOutIcon->setIcon(QPixmap(":/zoomout.png"));
-    zoomOutIcon->setIconSize(iconSize);
-
-    gridLayout->addWidget(zoomOutIcon);
-
-    QToolButton *zoomOutIcon1 = new QToolButton;
-    zoomOutIcon1->setIcon(QPixmap(":/zoomin.png"));
-    zoomOutIcon1->setIconSize(iconSize);
-
-    gridLayout->addWidget(zoomOutIcon1);
-
-    QToolButton *zoomOutIcon2 = new QToolButton;
-    zoomOutIcon2->setIcon(QPixmap(":/fileprint.png"));
-    zoomOutIcon2->setIconSize(iconSize);
-
-    gridLayout->addWidget(zoomOutIcon2);
-
-    QWidget * ButtonWidget=new QWidget;
-    ButtonWidget->setLayout(gridLayout);
-    gridLayout->setHorizontalSpacing(0);gridLayout->setVerticalSpacing(0);
-    vLeftBoxLayout->addWidget(ButtonWidget);*/
     /******************* nouveau  ******************************************/
-    QWidget * RemainingPlaceWidget=new QWidget;
+    C02ToolButton *toolButton2=new C02ToolButton;
+    toolButton2->setIconSize( 30);
+    toolButton2->setNbIconHorizontal(2);
+    (toolButton2->addToolButton(C03StateMachineBase::MachineBase,QPixmap(":/select.png"),"select 2"))->setChecked(true);
+    toolButton2->addToolButton(C03StateMachineBase::MachineBase,QPixmap(":/edit-polygon.png"),"edit polygon 2");
+    toolButton2->addToolButton(C03StateMachineBase::MachineBase,QPixmap(":/draw-polygon.png"),"create polygon 2");
+    toolButton2->redraw();
+
     C02ToolButton *toolButton=new C02ToolButton;
-    vLeftBoxLayout->addWidget(toolButton);
     toolButton->setIconSize( 30);
     toolButton->setNbIconHorizontal(2);
-    //toolButton->addToolButton(QPixmap(":/select-pass.png"),QPixmap(":/select-gris.png"),QPixmap(":/select-on.png"),QPixmap(":/select-no.png"),"select");
-    //toolButton->addToolButton(QPixmap(":/select-pass.png"),QPixmap(":/draw-polygon.png"),QPixmap(":/fileprint.png"),QPixmap(":/zoomout.png"),"truc");
-    (toolButton->addToolButton(QPixmap(":/select.png"),"select"))->setChecked(true);
-    toolButton->addToolButton(QPixmap(":/edit-polygon.png"),"edit polygon");
-    toolButton->addToolButton(QPixmap(":/draw-polygon.png"),"create polygon");
-   // toolButton->addToolButton(QPixmap(":/zoomout.png"));
+    (toolButton->addToolButton(C03StateMachineBase::MachineBase,QPixmap(":/select.png"),"select"))->setChecked(true);
+    toolButton->addToolButton(toolButton2,QPixmap(":/edit-polygon.png"),"edit polygon");
+    toolButton->addToolButton(C03StateMachineBase::MachineBase,QPixmap(":/draw-polygon.png"),"create polygon");
     toolButton->redraw();
+    globalContext.setToolButton(toolButton);
 
+    QFrame * RemainingPlaceWidget=new QFrame;
+    RemainingPlaceWidget->setFrameStyle(QFrame::Sunken | QFrame::StyledPanel);
+    //RemainingPlaceWidget->setFixedHeight(65);
+    //RemainingPlaceWidget->setMaximumHeight(1000);
+    vLeftBoxLayout->addWidget(toolButton);
     vLeftBoxLayout->addWidget(RemainingPlaceWidget);
- //   ButtonWidget->setFixedHeight(100);
+    //ButtonWidget->setFixedHeight(100);
+    vLeftBoxLayout->setStretchFactor(RemainingPlaceWidget,20);
+
 
     /******************* creer les scenes ******************************************/
-    scene1 = new C01GraphicsScene;
-    scene1->populateScene();
-    scene1->registerToolButton(toolButton);
-    scene2 = new C01GraphicsScene;
-    scene2->populateScene();
-    scene2->registerToolButton(toolButton);
-
-    h1Splitter->addWidget(scene1->addView("Top left view"));
-    h1Splitter->addWidget(scene1->addView("Top right view"));
-    h2Splitter->addWidget(scene2->addView("Bottom left view"));
-    h2Splitter->addWidget(scene2->addView("Bottom right view"));
+    newProj();
     /******************* creer les outils ******************************************/
 
+}
+void MainWindow::newProj()
+{
+
+    C01GraphicsScene *scene;
+    C04SceneContext *context;
+    scene = new C01GraphicsScene;
+    scene->populateScene();
+    scene->registerToolButton(globalContext.getToolButton());
+    QSplitter *horSplitter = new QSplitter;
+    QString name=globalContext.getUnusedName();
+    int tabIndex=globalContext.getTabWidget()->addTab(horSplitter,name);
+    globalContext.getTabWidget()->setCurrentIndex(tabIndex);
+    View* theView=scene->addView(name);
+    horSplitter->addWidget(theView);
+    horSplitter->addWidget(scene->addView(name));
+    context =new C04SceneContext(scene,theView,tabIndex,name);
+    scene->setSceneContext(context);
+    globalContext.addContext(context);
+    globalContext.setCurrentContext(context);
+    //theView->theGraphicsView()->activateWindow();
+
+    connect(scene, &C01GraphicsScene::sceneActive, this, &MainWindow::sceneActive);
+    theView->theGraphicsView()->setFocus();
+    globalContext.getToolButton()->restoreDefaultButtons();
+
+}
+void MainWindow::tabCloseRequested(int tabIndex)
+{
+    C04SceneContext* ptContext=globalContext.getPt(tabIndex);
+    if (ptContext!=NULL)
+    {
+        globalContext.removeContext(ptContext);
+    }
+}
+void MainWindow::closeProj()
+{
+    C04SceneContext* ptContext=globalContext.getCurrentContext();
+    if (ptContext!=NULL)
+    {
+        globalContext.removeContext(ptContext);
+    }
+}
+
+void  MainWindow::sceneActive(C04SceneContext* context,bool isActive)
+{
+    QString A;
+    A.append("Polygone : ");
+    if(isActive)
+    {
+        A.append(context->getFileName());
+        setWindowTitle(A);
+        globalContext.setCurrentContext(context);
+    }
+    else
+    {
+        //A.append("NONE");
+        //globalContext.setCurrentContext(NULL);
+    }
+    setWindowTitle(A);
 }
 
 

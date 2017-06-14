@@ -53,11 +53,13 @@ public:
 
 signals:
     void focusInEvent(void);
+    void focusOutEvent(void);
 protected:
 #ifndef QT_NO_WHEELEVENT
     void wheelEvent(QWheelEvent *) Q_DECL_OVERRIDE;
 #endif
 virtual void	focusInEvent(QFocusEvent *event);
+virtual void	focusOutEvent(QFocusEvent *event);
 private:
     View *view;
 };

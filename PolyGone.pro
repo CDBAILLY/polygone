@@ -25,7 +25,12 @@ SOURCES += main.cpp\
     c02qbuttongroup.cpp \
     c02qtoolbutton.cpp \
     c03statemachinebase.cpp \
-    c03statemachinepositioner.cpp
+    c03statemachinepositioner.cpp \
+    c03statemachinefactory.cpp \
+    c04scenecontext.cpp \
+    c04globalcontext.cpp \
+    c05graphicsitem.cpp \
+    C03StateMachineDrawObject.cpp
 
 HEADERS  += mainwindow.h \
     chip.h \
@@ -35,7 +40,12 @@ HEADERS  += mainwindow.h \
     c02qbuttongroup.h \
     c02qtoolbutton.h \
     c03statemachinebase.h \
-    c03statemachinepositioner.h
+    c03statemachinepositioner.h \
+    c03statemachinefactory.h \
+    c04scenecontext.h \
+    c04globalcontext.h \
+    c05graphicsitem.h \
+    C03StateMachineDrawObject.h
 
 FORMS    += mainwindow.ui
 

@@ -18,11 +18,20 @@ View* C01GraphicsScene::addView(QString titre)
     QObject::connect(
                 view->theGraphicsView(), static_cast<void(GraphicsView::*)()>(&GraphicsView::focusInEvent),
                 this, &C01GraphicsScene::aViewGetFocus);
+    QObject::connect(
+                view->theGraphicsView(), static_cast<void(GraphicsView::*)()>(&GraphicsView::focusOutEvent),
+                this, &C01GraphicsScene::aViewLooseFocus);
     return view;
 }
 void C01GraphicsScene::aViewGetFocus()
 {
     emit stMachPos.getFocus(&stMachPos);
+    emit sceneActive(theContext,true);
+}
+void C01GraphicsScene::aViewLooseFocus()
+{
+    //emit stMachPos.getFocus(&stMachPos);
+    emit sceneActive(theContext,false);
 }
 
 void C01GraphicsScene::populateScene()
@@ -96,6 +105,8 @@ void C01GraphicsScene::registerToolButton(C02ToolButton *toolButtonWidget)
     toolButtonWidget->getFocus(&stMachPos);
     QObject::connect(&stMachPos, &C03stateMachinePositioner::getFocus,
                      toolButtonWidget, &C02ToolButton::getFocus);
+
+    toolButtonWidget->buttonToggled(toolButtonWidget->checkedId(),true);
 
 }
 

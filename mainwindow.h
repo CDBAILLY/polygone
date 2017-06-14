@@ -35,12 +35,14 @@
 #define MAINWINDOW_H
 
 #include <QWidget>
-
+#include <QMainWindow>
+#include "c04globalcontext.h"
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;
 class QSplitter;
 QT_END_NAMESPACE
 class C01GraphicsScene;
+class C02ToolButton;
 
 class MainWindow : public QWidget
 {
@@ -48,12 +50,16 @@ class MainWindow : public QWidget
 public:
     MainWindow(QWidget *parent = 0);
 
+public slots:
+    void newProj(void);
+    void closeProj(void);
+    void tabCloseRequested(int tabIndex);
+    void sceneActive(C04SceneContext* context,bool isActive);
 private:
     void setupMatrix();
-    C01GraphicsScene *scene1;
-    C01GraphicsScene *scene2;
-    QSplitter *h1Splitter;
-    QSplitter *h2Splitter;
+    //QTabWidget *tabWidget;
+    C04GlobalContext globalContext;
+//    C02ToolButton *toolButton;
 
 };
 
